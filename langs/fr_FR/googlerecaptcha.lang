@@ -1,0 +1,41 @@
+# Copyright (C) 2019 Frédéric FRANCE <frederic.france@netlogic.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+#
+# Générique
+#
+
+# Module label 'ModuleGoogleRecaptchaName'
+ModuleGoogleRecaptchaName=GoogleRecaptcha
+# Module description 'ModuleGoogleRecaptchaDesc'
+ModuleGoogleRecaptchaDesc=Ajoute le Google Recaptcha V3 sur la page de login
+
+#
+# Page d'administration
+#
+GoogleRecaptchaSetup=Configuration GoogleRecaptcha
+GoogleRecaptchaSettings=Réglages GoogleRecaptcha
+GoogleRecaptchaSetupPage=Page de configuration du module GoogleRecaptcha
+GOOGLERECAPTCHA_SITE_KEY=Clé site Google Recaptcha V3
+GOOGLERECAPTCHA_SERVER_KEY=Clé secrète serveur Google Recaptcha V3
+GOOGLERECAPTCHA_SETUP_URL=https://www.google.com/recaptcha/admin
+GOOGLERECAPTCHA_GO_HERE=Se rendre ici pour créer vos clés Google Recaptcha V3
+GOOGLERECAPTCHA_THEN=Une fois vos clés générées et paramétrées ici, modifiez votre fichier conf et remplacez $dolibarr_main_authentication='dolibarr'; par $dolibarr_main_authentication='googlerecaptcha';
+ValidScore=Validé avec un score de %s (Valeur comprise entre 0 et 1)
+#
+# Page À propos
+#
+GoogleRecaptchaAbout=À propos de GoogleRecaptcha
+GoogleRecaptchaAboutPage=Page à propos de GoogleRecaptcha
