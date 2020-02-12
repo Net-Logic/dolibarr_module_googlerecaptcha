@@ -64,7 +64,7 @@ class ActionsGoogleRecaptcha
 
     /**
      * Edits the login form to allow entering GoogleRecaptcha Login
-     * @return void
+     * @return int
      */
     public function getLoginPageOptions()
     {
@@ -88,5 +88,19 @@ class ActionsGoogleRecaptcha
             $this->resprints = $tpl;
         }
         return 0;
+    }
+
+    /**
+     * Return password field for new user create
+     * @return int
+     */
+    public function printUserPasswordField($parameters)
+    {
+        global $conf;
+
+        $tpl = ($parameters['valuetoshow']?', ':'').'<input size="30" maxsize="32" type="text" name="password" value="'.$parameters['password'].'" autocomplete="new-password">';
+
+        $this->resprints = $tpl;
+        return 1;
     }
 }
