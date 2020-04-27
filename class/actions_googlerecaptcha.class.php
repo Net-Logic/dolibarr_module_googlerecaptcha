@@ -1,5 +1,5 @@
 <?php
-/* Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
+/* Copyright (C) 2019-2020  Frédéric France         <frederic.france@netlogic.fr>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ class ActionsGoogleRecaptcha
         $tpl .= "        grecaptcha.execute('".$conf->global->GOOGLERECAPTCHA_SITE_KEY."', {action: 'login'}).then(function(token) {\n";
         $tpl .= "            // add token to form\n";
         $tpl .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
-        $tpl .= "            $('#login').submit();\n";
+        $tpl .= "            $('#login').unbind('submit').submit();\n";
         $tpl .= "        });\n";
         $tpl .= "    });\n";
         $tpl .= "});\n";
