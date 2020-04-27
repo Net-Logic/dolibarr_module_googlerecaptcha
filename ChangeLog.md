@@ -1,5 +1,9 @@
 # CHANGELOG GOOGLERECAPTCHA FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
+## 1.3
+
+Fix chrome login
+
 ## 1.2
 
 Add check config in setup

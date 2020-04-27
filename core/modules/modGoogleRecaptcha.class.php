@@ -62,7 +62,7 @@ class modGoogleRecaptcha extends DolibarrModules
         $this->editor_name = '<strong>Net Logic</strong>';
         $this->editor_url = 'https://netlogic.fr';
         // Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-        $this->version = '1.2';
+        $this->version = '1.3';
         // Url to the file with your last numberversion of this module
         //$this->url_last_version = 'http://www.example.com/versionmodule.txt';
 
@@ -98,6 +98,8 @@ class modGoogleRecaptcha extends DolibarrModules
             'hooks' => array(
                 'data' => array(
                     'mainloginpage',
+                    // usercard pour le password
+                    'usercard',
                 ),
                 'entity' => '0',
             ),
