@@ -1,0 +1,7 @@
+<changelog>
+<Version Number="15.0.+1.3.0" MonthVersion="2019-12">
+		<change type='inf'>First release</change>
+</Version>
+<!-- Remplir le undocumented.xml ? -->
+<Dolibarr minVersion="9.0.0"/>
+</changelog>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<presentation lang="fr_FR">
+	<nommodule>, Captcha pour Dolibarr</nommodule>
+	<para imgsrc="https://www.dolistore.com/7710-thickbox_default/Google-Recaptcha-V3-pour-Dolibarr.jpg">
+		<titre>
+			Google Recaptcha V3
+		</titre>
+		Gagnez du temps et de la sécurité en utilisant le recaptcha google sur la page de connexion
+	<para imgsrc="https://www.dolistore.com/5224-thickbox_default/Google-Recaptcha-V3-pour-Dolibarr.jpgs">
+		<titre>
+			Page d'accueil 
+		</titre>
+		Permet de sécuriser son Dolibarr simplement  
+	</para>
+    <para imgsrc="https://www.dolistore.com/5223-thickbox_default/Google-Recaptcha-V3-pour-Dolibarr.jpg">
+		<titre>
+			Configuration de Captcha
+		</titre>
+		Activation simple et pratique de ce module pour plus de sécurité sur votre Dolibarr 
+	</para>
+	<service>
+	</service>
+	<alerte>
+	</alerte>
+</presentation>
+<additionalmodules>
+	<module name="docusign"/>
+	<module name="dolesign"/>
+<additionalmodules>
