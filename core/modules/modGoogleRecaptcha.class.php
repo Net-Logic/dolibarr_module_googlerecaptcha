@@ -48,7 +48,7 @@ class modGoogleRecaptcha extends DolibarrModules
         $this->rights_class = 'googlerecaptcha';
         // Family can be 'base' (core modules),'crm','financial','hr','projects','products','ecm','technic' (transverse modules),'interface' (link with external tools),'other','...'
         // It is used to group modules by family in module setup page
-        $this->family = "Net-Logic";
+        $this->family = 'Net Logic';
         // Module position in the family on 2 digits ('01', '10', '20', ...)
         $this->module_position = '90';
         // Gives the possibility for the module, to provide his own family info and position of this family (Overwrite $this->family and $this->module_position. Avoid this)
@@ -59,7 +59,7 @@ class modGoogleRecaptcha extends DolibarrModules
         $this->description = "GoogleRecaptchaDescription";
         // Used only if file README.md and README-LL.md not found.
         $this->descriptionlong = "GoogleRecaptcha description (Long)";
-        $this->editor_name = '<strong>Net Logic</strong>';
+        $this->editor_name = 'Net Logic';
         $this->editor_url = 'https://netlogic.fr';
         // Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
         $this->version = '1.3';
