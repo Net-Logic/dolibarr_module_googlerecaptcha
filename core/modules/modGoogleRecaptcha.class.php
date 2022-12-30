@@ -1,6 +1,6 @@
 <?php
 /* Copyright (C) 2004-2018  Laurent Destailleur     <eldy@users.sourceforge.net>
- * Copyright (C) 2019       Frédéric France         <frederic.france@netlogic.fr>
+ * Copyright (C) 2019-2022  Frédéric France         <frederic.france@netlogic.fr>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,12 +59,12 @@ class modGoogleRecaptcha extends DolibarrModules
         $this->description = "GoogleRecaptchaDescription";
         // Used only if file README.md and README-LL.md not found.
         $this->descriptionlong = "GoogleRecaptcha description (Long)";
-        $this->editor_name = 'Net Logic';
+        $this->editor_name = 'Net-Logic';
         $this->editor_url = 'https://netlogic.fr';
         // Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
         $this->version = '1.3';
         // Url to the file with your last numberversion of this module
-        //$this->url_last_version = 'http://www.example.com/versionmodule.txt';
+        $this->url_last_version = 'https://wiki.netlogic.fr/versionmodule.php?module=googlerecaptcha';
 
         // Key used in llx_const table to save module status enabled/disabled (where GOOGLERECAPTCHA is value of property name of module in uppercase)
         $this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
@@ -101,7 +101,7 @@ class modGoogleRecaptcha extends DolibarrModules
                     // usercard pour le password
                     'usercard',
                 ),
-                'entity' => '0',
+                'entity' => $conf->entity,
             ),
             // Set this to 1 if features of module are opened to external users
             'moduleforexternal' => 0,
