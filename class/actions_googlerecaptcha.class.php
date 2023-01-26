@@ -27,80 +27,80 @@
  */
 class ActionsGoogleRecaptcha
 {
-    /**
-     * @var DoliDB Database handler.
-     */
-    public $db;
+	/**
+	 * @var DoliDB Database handler.
+	 */
+	public $db;
 
-    /**
-     * @var string Error code (or message)
-     */
-    public $error = '';
+	/**
+	 * @var string Error code (or message)
+	 */
+	public $error = '';
 
-    /**
-     *  @var array Errors
-     */
-    public $errors = array();
+	/**
+	 *  @var array Errors
+	 */
+	public $errors = [];
 
-    /**
-     *  @var array Hook results. Propagated to $hookmanager->resArray for later reuse
-     */
-    public $results = array();
+	/**
+	 *  @var array Hook results. Propagated to $hookmanager->resArray for later reuse
+	 */
+	public $results = [];
 
-    /**
-     *  @var string String displayed by executeHook() immediately after return
-     */
-    public $resprints;
+	/**
+	 *  @var string String displayed by executeHook() immediately after return
+	 */
+	public $resprints;
 
-    /**
-     *  Constructor
-     *
-     *  @param  DoliDB  $db      Database handler
-     */
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
+	/**
+	 *  Constructor
+	 *
+	 *  @param  DoliDB  $db      Database handler
+	 */
+	public function __construct($db)
+	{
+		$this->db = $db;
+	}
 
-    /**
-     * Edits the login form to allow entering GoogleRecaptcha Login
-     * @return int
-     */
-    public function getLoginPageOptions()
-    {
-        global $conf;
-        $tpl .= '<script src="https://www.google.com/recaptcha/api.js?render='.$conf->global->GOOGLERECAPTCHA_SITE_KEY.'"></script>';
-        $tpl .= "<script>\n";
-        $tpl .= "$('#login').submit(function() {\n";
-        $tpl .= "    // we stoped it\n";
-        $tpl .= "    event.preventDefault();\n";
-        $tpl .= "    console.log('try login...');\n";
-        $tpl .= "    grecaptcha.ready(function() {\n";
-        $tpl .= "        grecaptcha.execute('".$conf->global->GOOGLERECAPTCHA_SITE_KEY."', {action: 'login'}).then(function(token) {\n";
-        $tpl .= "            // add token to form\n";
-        $tpl .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
-        $tpl .= "            $('#login').unbind('submit').submit();\n";
-        $tpl .= "        });\n";
-        $tpl .= "    });\n";
-        $tpl .= "});\n";
-        $tpl .= "</script>\n";
-        if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
-            $this->resprints = $tpl;
-        }
-        return 0;
-    }
+	/**
+	 * Edits the login form to allow entering GoogleRecaptcha Login
+	 * @return int
+	 */
+	public function getLoginPageOptions()
+	{
+		global $conf;
+		$tpl .= '<script src="https://www.google.com/recaptcha/api.js?render=' . $conf->global->GOOGLERECAPTCHA_SITE_KEY . '"></script>';
+		$tpl .= "<script>\n";
+		$tpl .= "$('#login').submit(function() {\n";
+		$tpl .= "    // we stoped it\n";
+		$tpl .= "    event.preventDefault();\n";
+		$tpl .= "    console.log('try login...');\n";
+		$tpl .= "    grecaptcha.ready(function() {\n";
+		$tpl .= "        grecaptcha.execute('" . $conf->global->GOOGLERECAPTCHA_SITE_KEY . "', {action: 'login'}).then(function(token) {\n";
+		$tpl .= "            // add token to form\n";
+		$tpl .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
+		$tpl .= "            $('#login').unbind('submit').submit();\n";
+		$tpl .= "        });\n";
+		$tpl .= "    });\n";
+		$tpl .= "});\n";
+		$tpl .= "</script>\n";
+		if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
+			$this->resprints = $tpl;
+		}
+		return 0;
+	}
 
-    /**
-     * Return password field for new user create
-     * @return int
-     */
-    public function printUserPasswordField($parameters)
-    {
-        global $conf;
+	/**
+	 * Return password field for new user create
+	 * @return int
+	 */
+	public function printUserPasswordField($parameters)
+	{
+		global $conf;
 
-        $tpl = ($parameters['valuetoshow']?', ':'').'<input size="30" maxsize="32" type="text" name="password" value="'.$parameters['password'].'" autocomplete="new-password">';
+		$tpl = ($parameters['valuetoshow'] ? ', ' : '') . '<input size="30" maxsize="32" type="text" name="password" value="' . $parameters['password'] . '" autocomplete="new-password">';
 
-        $this->resprints = $tpl;
-        return 1;
-    }
+		$this->resprints = $tpl;
+		return 1;
+	}
 }
