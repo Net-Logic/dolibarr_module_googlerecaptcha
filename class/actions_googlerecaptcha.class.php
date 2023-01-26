@@ -40,12 +40,12 @@ class ActionsGoogleRecaptcha
 	/**
 	 *  @var array Errors
 	 */
-	public $errors = array();
+	public $errors = [];
 
 	/**
 	 *  @var array Hook results. Propagated to $hookmanager->resArray for later reuse
 	 */
-	public $results = array();
+	public $results = [];
 
 	/**
 	 *  @var string String displayed by executeHook() immediately after return

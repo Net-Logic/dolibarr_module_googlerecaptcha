@@ -34,7 +34,7 @@ function googlerecaptchaAdminPrepareHead()
 	$langs->load("googlerecaptcha@googlerecaptcha");
 
 	$h = 0;
-	$head = array();
+	$head = [];
 
 	$head[$h][0] = dol_buildpath("/googlerecaptcha/admin/setup.php", 1);
 	$head[$h][1] = $langs->trans("GoogleRecaptchaSettings");

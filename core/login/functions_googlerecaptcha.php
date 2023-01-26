@@ -49,17 +49,17 @@ function check_user_password_googlerecaptcha($usertotest, $passwordtotest, $enti
 
 	// post request to server
 	$url = 'https://www.google.com/recaptcha/api/siteverify';
-	$data = array(
+	$data = [
 		'secret' => $conf->global->GOOGLERECAPTCHA_SERVER_KEY,
 		'response' => $captcha,
-	);
-	$options = array(
-		'http' => array(
+	];
+	$options = [
+		'http' => [
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
 			'content' => http_build_query($data),
-		)
-	);
+		]
+	];
 	$context  = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
 	$responseKeys = json_decode($response, true);

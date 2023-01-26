@@ -62,7 +62,7 @@ require_once '../lib/googlerecaptcha.lib.php';
 //require_once "../class/myclass.class.php";
 
 // Translations
-$langs->loadLangs(array("admin", "googlerecaptcha@googlerecaptcha"));
+$langs->loadLangs(["admin", "googlerecaptcha@googlerecaptcha"]);
 
 // Access control
 if (!$user->admin) {
@@ -73,18 +73,18 @@ if (!$user->admin) {
 $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
-$arrayofparameters = array(
-	'GOOGLERECAPTCHA_SITE_KEY' => array(
+$arrayofparameters = [
+	'GOOGLERECAPTCHA_SITE_KEY' => [
 		'css' => 'minwidth300',
 		'type' => 'text',
 		'enabled' => 1,
-	),
-	'GOOGLERECAPTCHA_SERVER_KEY' => array(
+	],
+	'GOOGLERECAPTCHA_SERVER_KEY' => [
 		'css' => 'minwidth300',
 		'type' => 'password',
 		'enabled' => 1,
-	),
-);
+	],
+];
 
 
 
@@ -97,17 +97,17 @@ if ($action == 'checkconfig') {
 
 	// post request to server
 	$url = 'https://www.google.com/recaptcha/api/siteverify';
-	$data = array(
+	$data = [
 		'secret' => $conf->global->GOOGLERECAPTCHA_SERVER_KEY,
 		'response' => $captcha,
-	);
-	$options = array(
-		'http' => array(
+	];
+	$options = [
+		'http' => [
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
 			'content' => http_build_query($data),
-		)
-	);
+		]
+	];
 	$context  = stream_context_create($options);
 	$response = file_get_contents($url, false, $context);
 	$responseKeys = json_decode($response, true);

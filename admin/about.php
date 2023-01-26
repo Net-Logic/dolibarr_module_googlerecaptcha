@@ -60,7 +60,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/lib/functions2.lib.php';
 require_once '../lib/googlerecaptcha.lib.php';
 
 // Translations
-$langs->loadLangs(array("errors", "admin", "googlerecaptcha@googlerecaptcha"));
+$langs->loadLangs(["errors", "admin", "googlerecaptcha@googlerecaptcha"]);
 
 // Access control
 if (!$user->admin) {
