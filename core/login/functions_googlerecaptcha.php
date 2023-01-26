@@ -50,7 +50,7 @@ function check_user_password_googlerecaptcha($usertotest, $passwordtotest, $enti
 	// post request to server
 	$url = 'https://www.google.com/recaptcha/api/siteverify';
 	$data = [
-		'secret' => $conf->global->GOOGLERECAPTCHA_SERVER_KEY,
+		'secret' => $conf->global->GOOGLERECAPTCHA_SERVER_KEY ?? '',
 		'response' => $captcha,
 	];
 	$options = [
