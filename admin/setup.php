@@ -125,7 +125,7 @@ print load_fiche_titre($langs->trans($page_name), $linkback, 'object_googlerecap
 
 // Configuration header
 $head = googlerecaptchaAdminPrepareHead();
-dol_fiche_head($head, 'settings', '', -1, "googlerecaptcha@googlerecaptcha");
+print dol_get_fiche_head($head, 'settings', '', -1, "googlerecaptcha@googlerecaptcha");
 
 // Setup page goes here
 echo '<span class="opacitymedium">'.$langs->trans("GoogleRecaptchaSetupPage").'</span><br><br>';
