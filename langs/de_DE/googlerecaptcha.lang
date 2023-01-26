@@ -1,0 +1,17 @@
+/*
+ * Language code: de_DE
+ * Generation date 2023-01-26 13:22:21
+ */
+ModuleGoogleRecaptchaName=Google Recaptcha
+ModuleGoogleRecaptchaDesc=Fügen Sie Google Recaptcha V3 auf der Anmeldeseite hinzu
+GoogleRecaptchaSetup=GoogleRecaptcha-Setup
+GoogleRecaptchaSettings=GoogleRecaptcha-Einstellungen
+GoogleRecaptchaSetupPage=Konfigurationsseite des GoogleRecaptcha-Moduls
+GOOGLERECAPTCHA_SITE_KEY=Google Recaptcha V3-Websiteschlüssel
+GOOGLERECAPTCHA_SERVER_KEY=Geheimer Schlüssel des Google Recaptcha V3-Servers
+GOOGLERECAPTCHA_SETUP_URL=https://www.google.com/recaptcha/admin
+GOOGLERECAPTCHA_GO_HERE=Gehen Sie hier, um Ihre Google Recaptcha V3-Schlüssel zu erstellen
+GOOGLERECAPTCHA_THEN=Sobald Ihre Schlüssel generiert und hier eingestellt sind, bearbeiten Sie Ihre conf-Datei und ersetzen Sie $dolibarr_main_authentication='dolibarr'; von $dolibarr_main_authentication='googlerecaptcha';
+ValidScore=Validiert mit einem %s-Score (Wert zwischen 0 und 1)
+GoogleRecaptchaAbout=Über Google Recaptcha
+GoogleRecaptchaAboutPage=Seite über GoogleRecaptcha

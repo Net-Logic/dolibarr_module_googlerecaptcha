@@ -38,3 +38,5 @@ GOOGLERECAPTCHA_GO_HERE=Go here to create yours Google Recaptcha V3 keys
 #
 GoogleRecaptchaAbout=About GoogleRecaptcha
 GoogleRecaptchaAboutPage=GoogleRecaptcha about page
+GOOGLERECAPTCHA_THEN=Once your keys are generated and set here, edit your conf file and replace $dolibarr_main_authentication='dolibarr'; by $dolibarr_main_authentication='googlerecaptcha';
+ValidScore=Validated with an %s score (Value between 0 and 1)

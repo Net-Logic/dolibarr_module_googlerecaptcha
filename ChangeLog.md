@@ -1,17 +1,8 @@
-# CHANGELOG GOOGLERECAPTCHA FOR [DOLIBARR ERP CRM](https://www.dolibarr.org)
 
-## 1.3
+## Unreleased (2023-01-26)
 
-Fix chrome login
+#### :bug: Bug Fix
+* [#1](https://github.com/Net-Logic/dolibarr_module_googlerecaptcha/pull/1) last fix ([@frederic34](https://github.com/frederic34))
 
-## 1.2
-
-Add check config in setup
-
-## 1.1
-
-Add verification of action
-
-## 1.0
-
-Initial version
+#### Committers: 1
+- Frédéric FRANCE ([@frederic34](https://github.com/frederic34))
