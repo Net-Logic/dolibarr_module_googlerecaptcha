@@ -44,16 +44,6 @@ jobs:
         run: parallel-lint --exclude vendor/ .
       - name: Run VarDump Check
         run: var-dump-check --extensions php --tracy --exclude vendor/ .
-      - name: Run autotranslator
-        run: |
-          php ./.tx/autotranslator.php fr_FR it_IT ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR en_US ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR es_ES ${{ secrets.GOOGLE_API_TRANSLATE }}
-          php ./.tx/autotranslator.php fr_FR de_DE ${{ secrets.GOOGLE_API_TRANSLATE }}
-      - name: Run changelog
-        run: npx lerna-changelog --from=v0.0.0 > ChangeLog.md
-        env:
-          GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
       - name: Bump version and push tag
         uses: Net-Logic/github-dolibarr-action@main
         env:
@@ -68,11 +58,3 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Bump version #none
-
-      - name: Zip Folder
-        run: rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' --exclude='.tx/' . ./release
-
-      - name: Switch to Release Folder
-        run: |
-          cd release
-          ls -la
