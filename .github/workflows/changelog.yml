@@ -4,9 +4,9 @@ name: CHANGELOG
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -59,8 +59,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_OWNER: frederic34
-          RELEASE_BRANCH: main
-          RELEASE_BRANCHES: main
+          RELEASE_BRANCH: master
+          RELEASE_BRANCHES: master
           MODULE: googlerecaptcha
           CLASSNAME: Googlerecaptcha
           DEFAULT_BUMP: none
