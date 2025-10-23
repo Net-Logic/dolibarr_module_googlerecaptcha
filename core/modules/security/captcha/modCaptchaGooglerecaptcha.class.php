@@ -60,7 +60,7 @@ class modCaptchaGooglerecaptcha extends ModeleCaptcha
 		$this->conf = $conf;
 		$this->langs = $langs;
 		$this->user = $user;
-		$this->langs->load('easytooltip@easytooltip');
+		$this->langs->load('googlerecaptcha@googlerecaptcha');
 	}
 
 	/**
