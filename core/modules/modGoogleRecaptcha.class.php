@@ -51,21 +51,21 @@ class modGoogleRecaptcha extends DolibarrModules
 		$this->rights_class = 'googlerecaptcha';
 		// Family can be 'base' (core modules),'crm','financial','hr','projects','products','ecm','technic' (transverse modules),'interface' (link with external tools),'other','...'
 		// It is used to group modules by family in module setup page
-		$this->family = 'Net Logic';
+		$this->family = 'Net-Logic';
 		// Module position in the family on 2 digits ('01', '10', '20', ...)
 		$this->module_position = '90';
 		// Gives the possibility for the module, to provide his own family info and position of this family (Overwrite $this->family and $this->module_position. Avoid this)
-		//$this->familyinfo = array('myownfamily' => array('position' => '01', 'label' => $langs->trans("MyOwnFamily")));
+		// $this->familyinfo = array('myownfamily' => array('position' => '01', 'label' => $langs->trans("MyOwnFamily")));
 		// Module label (no space allowed), used if translation string 'ModuleGoogleRecaptchaName' not found (GoogleRecaptcha is name of module).
 		$this->name = preg_replace('/^mod/i', '', get_class($this));
 		// Module description, used if translation string 'ModuleGoogleRecaptchaDesc' not found (GoogleRecaptcha is name of module).
 		$this->description = "GoogleRecaptchaDescription";
 		// Used only if file README.md and README-LL.md not found.
 		$this->descriptionlong = "GoogleRecaptcha description (Long)";
-		$this->editor_name = 'Net-Logic';
+		$this->editor_name = 'Net Logic';
 		$this->editor_url = 'https://netlogic.fr';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.3';
+		$this->version = '2.0.0';
 		// Url to the file with your last numberversion of this module
 		$this->url_last_version = 'https://wiki.netlogic.fr/versionmodule.php?module=googlerecaptcha';
 
@@ -93,6 +93,8 @@ class modGoogleRecaptcha extends DolibarrModules
 			'models' => 0,
 			// Set this to 1 if module has its own theme directory (theme)
 			'theme' => 0,
+			// Set this to 1 if module has its own security directory
+			'captcha' => 1,
 			// Set this to relative path of css file if module has its own css file
 			'css' => [],
 			// Set this to relative path of js file if module must load a js on all pages
@@ -125,8 +127,8 @@ class modGoogleRecaptcha extends DolibarrModules
 		$this->conflictwith = [];
 		$this->langfiles = ["googlerecaptcha@googlerecaptcha"];
 		// Minimum version of PHP required by module
-		$this->phpmin = [7, 0];
-		$this->need_dolibarr_version = [8, -3]; // Minimum version of Dolibarr required by module
+		$this->phpmin = [7, 1];
+		$this->need_dolibarr_version = [19, -3]; // Minimum version of Dolibarr required by module
 		// Warning to show when we activate module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
 		$this->warnings_activation = [];
 		// Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
