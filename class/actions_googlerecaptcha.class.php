@@ -69,14 +69,15 @@ class ActionsGoogleRecaptcha
 	public function getLoginPageOptions()
 	{
 		global $conf;
-		$tpl .= '<script src="https://www.google.com/recaptcha/api.js?render=' . $conf->global->GOOGLERECAPTCHA_SITE_KEY . '"></script>';
+
+		$tpl = '<script src="https://www.google.com/recaptcha/api.js?render=' . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . '"></script>';
 		$tpl .= "<script>\n";
 		$tpl .= "$('#login').submit(function() {\n";
 		$tpl .= "    // we stoped it\n";
 		$tpl .= "    event.preventDefault();\n";
 		$tpl .= "    console.log('try login...');\n";
 		$tpl .= "    grecaptcha.ready(function() {\n";
-		$tpl .= "        grecaptcha.execute('" . $conf->global->GOOGLERECAPTCHA_SITE_KEY . "', {action: 'login'}).then(function(token) {\n";
+		$tpl .= "        grecaptcha.execute('" . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . "', {action: 'login'}).then(function(token) {\n";
 		$tpl .= "            // add token to form\n";
 		$tpl .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
 		$tpl .= "            $('#login').unbind('submit').submit();\n";
@@ -84,9 +85,10 @@ class ActionsGoogleRecaptcha
 		$tpl .= "    });\n";
 		$tpl .= "});\n";
 		$tpl .= "</script>\n";
-		if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
+		if (getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY')) {
 			$this->resprints = $tpl;
 		}
+
 		return 0;
 	}
 

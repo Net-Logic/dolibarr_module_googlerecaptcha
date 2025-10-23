@@ -208,7 +208,7 @@ if ($action == 'edit') {
 	}
 }
 print $langs->trans("GOOGLERECAPTCHA_GO_HERE") . ': <a href="' . $langs->trans("GOOGLERECAPTCHA_SETUP_URL") . '" target="_blank">' . $langs->trans("GOOGLERECAPTCHA_SETUP_URL") . '</a><br>';
-print $langs->trans("GOOGLERECAPTCHA_THEN") . '<br>';
+// print $langs->trans("GOOGLERECAPTCHA_THEN") . '<br>';
 
 if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
 	print '<form id="checkconfig" name="checkconfig" method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
@@ -235,7 +235,7 @@ if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
 }
 
 // Page end
-dol_fiche_end();
+print dol_get_fiche_end();
 
 llxFooter();
 $db->close();
