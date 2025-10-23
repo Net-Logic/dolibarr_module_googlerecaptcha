@@ -61,20 +61,20 @@ jobs:
           REPO_OWNER: frederic34
           RELEASE_BRANCH: main
           RELEASE_BRANCHES: main
-          MODULE: easytooltip
-          CLASSNAME: EasyTooltip
+          MODULE: googlerecaptcha
+          CLASSNAME: Googlerecaptcha
           DEFAULT_BUMP: none
           INITIAL_VERSION: v0.0.0
       - name: Zip Folder
         run: |
           ls -al
-          mkdir build/easytooltip
-          rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' --exclude='.tx/' --exclude='build/' --exclude='codesniffer/' --exclude='test/' . ./build/easytooltip
+          mkdir build/googlerecaptcha
+          rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' --exclude='.tx/' --exclude='build/' --exclude='codesniffer/' --exclude='test/' . ./build/googlerecaptcha
       - name: Switch to Release Folder
         run: |
           cd build
-          rm module_easytooltip-${{ env.module_version }}.zip 2> /dev/null || true
-          zip -r module_easytooltip-${{ env.module_version }}.zip easytooltip
+          rm module_googlerecaptcha-${{ env.module_version }}.zip 2> /dev/null || true
+          zip -r module_googlerecaptcha-${{ env.module_version }}.zip googlerecaptcha
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Bump version #none
