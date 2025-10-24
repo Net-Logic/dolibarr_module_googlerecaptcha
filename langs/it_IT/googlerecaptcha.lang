@@ -15,3 +15,4 @@ GOOGLERECAPTCHA_THEN=Una volta che le tue chiavi sono state generate e impostate
 ValidScore=Convalidato con un punteggio %s (valore compreso tra 0 e 1)
 GoogleRecaptchaAbout=Informazioni su GoogleRecaptcha
 GoogleRecaptchaAboutPage=Pagina su GoogleRecaptcha
+DolibarrGoogleRecaptchaCaptcha=Google Recaptcha per Dolibarr

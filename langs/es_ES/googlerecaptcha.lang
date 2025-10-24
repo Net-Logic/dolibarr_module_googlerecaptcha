@@ -15,3 +15,4 @@ GOOGLERECAPTCHA_THEN=Una vez que sus claves se generan y configuran aquí, edite
 ValidScore=Validado con una puntuación %s (Valor entre 0 y 1)
 GoogleRecaptchaAbout=Acerca de GoogleRecaptcha
 GoogleRecaptchaAboutPage=Página sobre GoogleRecaptcha
+DolibarrGoogleRecaptchaCaptcha=Google Recaptcha para Dolibarr
