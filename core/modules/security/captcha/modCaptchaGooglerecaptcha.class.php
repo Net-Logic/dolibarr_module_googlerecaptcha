@@ -19,7 +19,7 @@
  */
 
 /**
- *      \file       htdocs/core/modules/security/captcha/modCaptchaEasytooltip.class.php
+ *      \file       htdocs/core/modules/security/captcha/modCaptchaGooglerecaptcha.class.php
  *      \ingroup    core
  *		\brief      File to manage captcha generation according to dolibarr native code
  */
@@ -71,7 +71,7 @@ class modCaptchaGooglerecaptcha extends ModeleCaptcha
 	public function getDescription()
 	{
 		global $langs;
-		return $langs->trans("DolibarrEasytooltipCaptcha");
+		return $langs->trans("DolibarrGoogleRecaptchaCaptcha");
 	}
 
 	/**
@@ -81,8 +81,6 @@ class modCaptchaGooglerecaptcha extends ModeleCaptcha
 	 */
 	public function getExample()
 	{
-		global $db, $langs, $user;
-
 		$out = '<script src="https://www.google.com/recaptcha/api.js?render=' . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . '"></script>';
 		$out .= "<script>\n";
 		$out .= "$('#login').submit(function() {\n";
@@ -110,25 +108,7 @@ class modCaptchaGooglerecaptcha extends ModeleCaptcha
 	 */
 	public function getCaptchaCodeForForm($php_self = '')
 	{
-		global $langs;
-
-		$out = '<script src="https://www.google.com/recaptcha/api.js?render=' . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . '"></script>';
-		$out .= "<script>\n";
-		$out .= "$('#login').submit(function() {\n";
-		$out .= "    // we stoped it\n";
-		$out .= "    event.preventDefault();\n";
-		$out .= "    console.log('try login...');\n";
-		$out .= "    grecaptcha.ready(function() {\n";
-		$out .= "        grecaptcha.execute('" . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . "', {action: 'login'}).then(function(token) {\n";
-		$out .= "            // add token to form\n";
-		$out .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
-		$out .= "            $('#login').unbind('submit').submit();\n";
-		$out .= "        });\n";
-		$out .= "    });\n";
-		$out .= "});\n";
-		$out .= "</script>\n";
-
-		return $out;
+		return $this->getExample();
 	}
 
 
