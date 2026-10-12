@@ -13,6 +13,9 @@
 * Removed the hook of the user card that showed the password in a text field.
 * Minimum Dolibarr version: 20.
 
+#### Publication
+* Automatic packaging (`build/makepack.sh`) and DoliStore publication on release.
+
 
 ## v2.0.0 (2025-10-23)
 

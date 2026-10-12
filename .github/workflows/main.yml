@@ -1,60 +1,86 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  # Attach the package to a release when it is published
+  release:
+    types: [published]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  lint:
+    # Not needed to publish a release
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v5
-        with:
-         fetch-depth: '0'
+      # PHP 7.4: the lowest version the module supports
       - name: Setup PHP
-        id: setup-php
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           tools: php-parallel-lint/php-var-dump-check, parallel-lint, cs2pr, phpcs
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
-          registry-url: 'https://registry.npmjs.org'
-      - name: Print PHP version
-        run: echo ${{ steps.setup-php.outputs.php-version }}
       - name: Run PHPCS
-        run: phpcs -q --report=checkstyle --standard=codesniffer/ruleset.xml --extensions=php --ignore=*/tx/*,*/vendor/* . | cs2pr --graceful-warnings
+        run: phpcs -q --report=checkstyle --standard=codesniffer/ruleset.xml --extensions=php --ignore=*/vendor/* . | cs2pr --graceful-warnings
       - name: Run Parallel Lint
         run: parallel-lint --exclude vendor/ .
       - name: Run VarDump Check
         run: var-dump-check --extensions php --tracy --exclude vendor/ .
-      - name: Bump version and push tag
-        uses: Net-Logic/github-dolibarr-action@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_OWNER: Net-Logic
-          RELEASE_BRANCH: main
-          MODULE: googlerecaptcha
-          CLASSNAME: Googlerecaptcha
-          RELEASE_BRANCHES: main
-          DEFAULT_BUMP: none
-          INITIAL_VERSION: googlerecaptcha-0.1.0
-      - uses: stefanzweifel/git-auto-commit-action@v4
+
+  # Package the module in the Dolibarr distribution format (build/module_googlerecaptcha-<version>.zip)
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build the module package
+        run: build/makepack.sh
+      - name: Locate the package of the descriptor version
+        run: |
+          VERSION=$(grep -E '^[[:space:]]*\$this->version[[:space:]]*=' core/modules/modGoogleRecaptcha.class.php | head -n 1 | grep -oE "'[0-9][^']*'" | tr -d "'")
+          ZIP="build/module_googlerecaptcha-${VERSION//-/.}.zip"
+          test -f "$ZIP"
+          echo "ZIP=$ZIP" >> "$GITHUB_ENV"
+      - name: Upload the package
+        uses: actions/upload-artifact@v4
         with:
-          commit_message: Bump version #none
+          name: module_googlerecaptcha
+          path: ${{ env.ZIP }}
+          if-no-files-found: error
+      - name: Attach the package to the release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$TAG" "$ZIP" --clobber
+
+  # Update the DoliStore product from dolistore/: dry run by hand, real submission on a published release
+  dolistore:
+    needs: [package]
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: dolistore-googlerecaptcha
+      cancel-in-progress: false
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: module_googlerecaptcha
+          path: dist
+      - name: Find the package
+        run: echo "ZIP=$(ls dist/module_googlerecaptcha-*.zip)" >> "$GITHUB_ENV"
+      # Pinned to a tag: the action receives the DoliStore secrets, a moving ref (@main) would let any push to its main read them
+      - uses: Net-Logic/dolistore-sync@v0.2.0
+        with:
+          descriptor: core/modules/modGoogleRecaptcha.class.php
+          zip: ${{ env.ZIP }}
+          dry-run: ${{ github.event_name == 'release' && !github.event.release.prerelease && 'false' || 'true' }}
+          login: ${{ secrets.DOLISTORE_LOGIN }}
+          password: ${{ secrets.DOLISTORE_PASSWORD }}

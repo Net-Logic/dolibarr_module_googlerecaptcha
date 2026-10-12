@@ -17,3 +17,6 @@
 /.project
 # Other
 *.back
+/build/googlerecaptcha
+/build/module_googlerecaptcha-*.zip
+/vendor
