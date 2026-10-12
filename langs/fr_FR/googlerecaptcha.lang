@@ -40,3 +40,16 @@ ValidScore=Validé avec un score de %s (Valeur comprise entre 0 et 1)
 GoogleRecaptchaAbout=À propos de GoogleRecaptcha
 GoogleRecaptchaAboutPage=Page à propos de GoogleRecaptcha
 DolibarrGoogleRecaptchaCaptcha=Recaptcha Google pour Dolibarr
+
+#
+# Captcha et connexion
+#
+GOOGLERECAPTCHA_MIN_SCORE=Score minimum accepté
+GOOGLERECAPTCHA_MIN_SCORETooltip=Google donne un score entre 0.0 (très probablement un robot) et 1.0 (très probablement un humain). Les formulaires avec un score inférieur sont refusés. 0.7 par défaut.
+GoogleRecaptchaErrorMinScore=Le score minimum doit être un nombre entre 0 et 1
+GoogleRecaptchaExample=reCAPTCHA v3 invisible : aucun champ à remplir, Google donne un score à l'envoi du formulaire
+GoogleRecaptchaLoginRefused=Connexion refusée par le contrôle reCAPTCHA, veuillez réessayer
+GoogleRecaptchaCheckFailed=Contrôle en échec : %s (score %s)
+GoogleRecaptchaHowToCaptcha=Pour protéger la page de connexion, la page de mot de passe oublié et les formulaires publics (tickets, adhérents, dons, recrutement), activez le captcha et choisissez « googlerecaptcha » dans %s.
+GoogleRecaptchaHowToLogin=Ou (toutes versions de Dolibarr, page de connexion seulement) : dans votre fichier conf.php, remplacez $dolibarr_main_authentication='dolibarr'; par $dolibarr_main_authentication='googlerecaptcha';
+CheckConfig=Vérifier les clés

@@ -1,3 +1,18 @@
+## Unreleased
+
+#### Compatibility with Dolibarr 20 to 25
+* Captcha handler (Dolibarr 21+): the token is added to every form that shows the captcha (login, password forgotten, public ticket, member, donation and recruitment forms of Dolibarr 23+), not only to the login form, also when the form is submitted by `form.submit()` (buttons of Dolibarr), keeping the clicked button.
+* `getFieldInputTitle()` (Dolibarr 23+): no input field shown, reCAPTCHA v3 is invisible.
+* Login method `googlerecaptcha` (all versions, the only mode on Dolibarr 20): the token is added by the hook of the login page again, only when the captcha handler does not already add it.
+
+#### Fixes
+* Login method: the reCAPTCHA token is checked before the password (a request without token could learn if a password is right from the message), and the login returned by Dolibarr is used (login by email).
+* A token is verified once per request (Google refuses a second check of the same token when both the captcha handler and the login method are used).
+* Call to Google with `getURLContent()` (works without `allow_url_fopen`, timeouts, external URL only) instead of `file_get_contents()`.
+* Setup page: values escaped, CSRF token, minimum score setting (`GOOGLERECAPTCHA_MIN_SCORE`, 0.7 by default), check of the keys with the score or the error code.
+* Removed the hook of the user card that showed the password in a text field.
+* Minimum Dolibarr version: 20.
+
 
 ## v2.0.0 (2025-10-23)
 

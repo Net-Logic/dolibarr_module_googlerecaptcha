@@ -41,3 +41,16 @@ GoogleRecaptchaAboutPage=GoogleRecaptcha about page
 GOOGLERECAPTCHA_THEN=Once your keys are generated and set here, edit your conf file and replace $dolibarr_main_authentication='dolibarr'; by $dolibarr_main_authentication='googlerecaptcha';
 ValidScore=Validated with an %s score (Value between 0 and 1)
 DolibarrGoogleRecaptchaCaptcha=Google Recaptcha for Dolibarr
+
+#
+# Captcha and login
+#
+GOOGLERECAPTCHA_MIN_SCORE=Minimum score accepted
+GOOGLERECAPTCHA_MIN_SCORETooltip=Google gives a score between 0.0 (very likely a bot) and 1.0 (very likely a human). Forms with a lower score are refused. Default 0.7.
+GoogleRecaptchaErrorMinScore=The minimum score must be a number between 0 and 1
+GoogleRecaptchaExample=Invisible reCAPTCHA v3: no field to fill, Google gives a score when the form is submitted
+GoogleRecaptchaLoginRefused=Login refused by the reCAPTCHA check, please try again
+GoogleRecaptchaCheckFailed=Check failed: %s (score %s)
+GoogleRecaptchaHowToCaptcha=To protect the login page, the password forgotten page and the public forms (tickets, members, donations, recruitment), enable the captcha and choose "googlerecaptcha" in %s.
+GoogleRecaptchaHowToLogin=Or (all Dolibarr versions, login page only): in your conf.php file, replace $dolibarr_main_authentication='dolibarr'; by $dolibarr_main_authentication='googlerecaptcha';
+CheckConfig=Check the keys

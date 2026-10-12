@@ -2,9 +2,16 @@
 
 ## Features
 
-This module add Google Recaptcha V3 on login Page.
+This module adds Google reCAPTCHA v3 (invisible: Google gives a score, nothing to fill) to Dolibarr.
 
-You need a Google account to create keys.
+Compatibility: Dolibarr 20 to 25.
+
+You need a Google account to create the keys (https://www.google.com/recaptcha/admin), then set them in the setup page of the module, with the minimum score accepted (0.7 by default).
+
+### Usage
+
+- **Dolibarr 21 and later (recommended)**: in *Setup > Security > Captcha*, enable the captcha and choose the handler `googlerecaptcha`. It protects the login page, the password forgotten page and, from Dolibarr 23, the public forms where the captcha is enabled (tickets, members, donations, recruitment...).
+- **All versions (login page only)**: in `conf/conf.php`, replace `$dolibarr_main_authentication='dolibarr';` by `$dolibarr_main_authentication='googlerecaptcha';`. The token is checked before the password. This is the only mode on Dolibarr 20 (no captcha handlers in this version).
 
 <!--
 ![Screenshot googlerecaptcha](img/screenshot_googlerecaptcha.png?raw=true "GoogleRecaptcha"){imgmd}

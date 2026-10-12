@@ -54,12 +54,15 @@ if (!$res) {
 	die("Include of main fails");
 }
 
-global $langs, $user;
+/**
+ * @var Conf $conf
+ * @var DoliDB $db
+ * @var Translate $langs
+ * @var User $user
+ */
 
-// Libraries
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
-require_once '../lib/googlerecaptcha.lib.php';
-//require_once "../class/myclass.class.php";
+dol_include_once('/googlerecaptcha/lib/googlerecaptcha.lib.php');
 
 // Translations
 $langs->loadLangs(["admin", "googlerecaptcha@googlerecaptcha"]);
@@ -70,7 +73,7 @@ if (!$user->admin) {
 }
 
 // Parameters
-$action = GETPOST('action', 'alpha');
+$action = GETPOST('action', 'aZ09');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 $arrayofparameters = [
@@ -84,51 +87,54 @@ $arrayofparameters = [
 		'type' => 'password',
 		'enabled' => 1,
 	],
+	'GOOGLERECAPTCHA_MIN_SCORE' => [
+		'css' => 'width75',
+		'type' => 'text',
+		'enabled' => 1,
+	],
 ];
 
+$form = new Form($db);
 
 
 /*
  * Actions
  */
-if ($action == 'checkconfig') {
-	$captcha = GETPOST('g-recaptcha-response', 'san_alpha');
-	//$ip = $_SERVER['REMOTE_ADDR'];
 
-	// post request to server
-	$url = 'https://www.google.com/recaptcha/api/siteverify';
-	$data = [
-		'secret' => $conf->global->GOOGLERECAPTCHA_SERVER_KEY,
-		'response' => $captcha,
-	];
-	$options = [
-		'http' => [
-			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-			'method'  => 'POST',
-			'content' => http_build_query($data),
-		]
-	];
-	$context  = stream_context_create($options);
-	$response = file_get_contents($url, false, $context);
-	$responseKeys = json_decode($response, true);
-	// {
-	//     "success": true|false,      // whether this request was a valid reCAPTCHA token for your site
-	//     "score": number             // the score for this request (0.0 - 1.0)
-	//     "action": string            // the action name for this request (important to verify)
-	//     "challenge_ts": timestamp,  // timestamp of the challenge load (ISO format yyyy-MM-dd'T'HH:mm:ssZZ)
-	//     "hostname": string,         // the hostname of the site where the reCAPTCHA was solved
-	//     "error-codes": [...]        // optional
-	// }
-	if ($responseKeys['success']) {
-		setEventMessage($langs->trans('ValidScore', $responseKeys['score']));
+if ($action == 'update') {
+	$error = 0;
+	foreach ($arrayofparameters as $key => $val) {
+		$value = GETPOST($key, 'alphanohtml');
+		if ($key == 'GOOGLERECAPTCHA_MIN_SCORE' && $value !== '') {
+			$value = str_replace(',', '.', $value);
+			if (!is_numeric($value) || (float) $value < 0 || (float) $value > 1) {
+				setEventMessages($langs->trans("GoogleRecaptchaErrorMinScore"), null, 'errors');
+				$error++;
+				continue;
+			}
+		}
+		$result = dolibarr_set_const($db, $key, $value, 'chaine', 0, '', $conf->entity);
+		if ($result < 0) {
+			$error++;
+		}
+	}
+	if (!$error) {
+		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+		header("Location: " . $_SERVER["PHP_SELF"]);
+		exit;
+	}
+	$action = 'edit';
+}
+
+if ($action == 'checkconfig') {
+	// Check of the keys: the form of this page sends a token of the site key, verified with the server key
+	$check = googlerecaptchaVerifyToken(GETPOST('g-recaptcha-response', 'aZ09'), 'checkconfig');
+	if ($check['ok']) {
+		setEventMessages($langs->trans('ValidScore', (string) $check['score']), null, 'mesgs');
 	} else {
-		setEventMessages('Error', $responseKeys['error-codes'], 'errors');
+		setEventMessages($langs->trans('GoogleRecaptchaCheckFailed', $check['error'], (string) $check['score']), null, 'errors');
 	}
 }
-if ((float) DOL_VERSION >= 6) {
-	include DOL_DOCUMENT_ROOT . '/core/actions_setmoduleoptions.inc.php';
-}
-
 
 
 /*
@@ -138,100 +144,80 @@ if ((float) DOL_VERSION >= 6) {
 $page_name = "GoogleRecaptchaSetup";
 llxHeader('', $langs->trans($page_name));
 
-// Subheader
 $linkback = '<a href="' . ($backtopage ? $backtopage : DOL_URL_ROOT . '/admin/modules.php?restore_lastsearch_values=1') . '">' . $langs->trans("BackToModuleList") . '</a>';
-
 print load_fiche_titre($langs->trans($page_name), $linkback, 'object_googlerecaptcha@googlerecaptcha');
 
-// Configuration header
 $head = googlerecaptchaAdminPrepareHead();
 print dol_get_fiche_head($head, 'settings', '', -1, "googlerecaptcha@googlerecaptcha");
 
-// Setup page goes here
-echo '<span class="opacitymedium">' . $langs->trans("GoogleRecaptchaSetupPage") . '</span><br><br>';
-
+print '<span class="opacitymedium">' . $langs->trans("GoogleRecaptchaSetupPage") . '</span><br><br>';
 
 if ($action == 'edit') {
 	print '<form method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
-	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="update">';
-
-	print '<table class="noborder centpercent">';
-	print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("Parameter") . '</td><td>' . $langs->trans("Value") . '</td></tr>';
-
-	foreach ($arrayofparameters as $key => $val) {
-		print '<tr class="oddeven">';
-		print '<td>';
-		$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
-		print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-		print '</td>';
-		print '<td>';
-		$type = empty($val['type']) ? 'text' : $val['type'];
-		print '<input name="' . $key . '" type="' . $type . '" class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . $conf->global->$key . '">';
-		print '</td>';
-		print '</tr>';
-	}
-	print '</table>';
-
-	print '<br><div class="center">';
-	print '<input class="button" type="submit" value="' . $langs->trans("Save") . '">';
-	print '</div>';
-
-	print '</form>';
-	print '<br>';
-} else {
-	if (!empty($arrayofparameters)) {
-		print '<table class="noborder centpercent">';
-		print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("Parameter") . '</td><td>' . $langs->trans("Value") . '</td></tr>';
-
-		foreach ($arrayofparameters as $key => $val) {
-			print '<tr class="oddeven">';
-			print '<td>';
-			$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
-			print $form->textwithpicto($langs->trans($key), $tooltiphelp);
-			print '</td><td>';
-			$value = $conf->global->$key;
-			if (isset($val['type']) && $val['type'] == 'password') {
-				$value = preg_replace('/./i', '*', $value);
-			}
-			print $value;
-			print '</td></tr>';
-		}
-
-		print '</table>';
-
-		print '<div class="tabsAction">';
-		print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit">' . $langs->trans("Modify") . '</a>';
-		print '</div>';
-	} else {
-		print '<br>' . $langs->trans("NothingToSetup");
-	}
 }
-print $langs->trans("GOOGLERECAPTCHA_GO_HERE") . ': <a href="' . $langs->trans("GOOGLERECAPTCHA_SETUP_URL") . '" target="_blank">' . $langs->trans("GOOGLERECAPTCHA_SETUP_URL") . '</a><br>';
-// print $langs->trans("GOOGLERECAPTCHA_THEN") . '<br>';
 
-if (!empty($conf->global->GOOGLERECAPTCHA_SITE_KEY)) {
+print '<table class="noborder centpercent">';
+print '<tr class="liste_titre"><td class="titlefield">' . $langs->trans("Parameter") . '</td><td>' . $langs->trans("Value") . '</td></tr>';
+foreach ($arrayofparameters as $key => $val) {
+	print '<tr class="oddeven">';
+	print '<td>';
+	$tooltiphelp = (($langs->trans($key . 'Tooltip') != $key . 'Tooltip') ? $langs->trans($key . 'Tooltip') : '');
+	print $form->textwithpicto($langs->trans($key), $tooltiphelp);
+	print '</td><td>';
+	$value = getDolGlobalString($key);
+	if ($action == 'edit') {
+		$type = empty($val['type']) ? 'text' : $val['type'];
+		print '<input name="' . $key . '" type="' . $type . '" class="flat ' . (empty($val['css']) ? 'minwidth200' : $val['css']) . '" value="' . dol_escape_htmltag($value) . '"' . ($type == 'password' ? ' autocomplete="new-password"' : '') . '>';
+		if ($key == 'GOOGLERECAPTCHA_MIN_SCORE') {
+			print ' <span class="opacitymedium">(' . $langs->trans("Default") . ': 0.7)</span>';
+		}
+	} else {
+		if (isset($val['type']) && $val['type'] == 'password') {
+			$value = preg_replace('/./', '*', $value);
+		}
+		if ($key == 'GOOGLERECAPTCHA_MIN_SCORE' && $value === '') {
+			$value = '<span class="opacitymedium">' . googlerecaptchaMinScore() . '</span>';
+		} else {
+			$value = dol_escape_htmltag($value);
+		}
+		print $value;
+	}
+	print '</td></tr>';
+}
+print '</table>';
+
+if ($action == 'edit') {
+	print '<br><div class="center">';
+	print '<input class="button button-save" type="submit" value="' . $langs->trans("Save") . '">';
+	print '</div>';
+	print '</form>';
+} else {
+	print '<div class="tabsAction">';
+	print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?action=edit&token=' . newToken() . '">' . $langs->trans("Modify") . '</a>';
+	print '</div>';
+}
+
+print '<br>';
+print $langs->trans("GOOGLERECAPTCHA_GO_HERE") . ': <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer">https://www.google.com/recaptcha/admin</a><br><br>';
+
+// How to use the module: captcha handler (Dolibarr 21+) and/or login method (all versions)
+print '<div class="info">';
+if (file_exists(DOL_DOCUMENT_ROOT . '/core/modules/security/captcha/modules_captcha.php')) {
+	print $langs->trans("GoogleRecaptchaHowToCaptcha", '<a href="' . DOL_URL_ROOT . '/admin/security_captcha.php">' . $langs->trans("Security") . ' - Captcha</a>') . '<br>';
+}
+print $langs->trans("GoogleRecaptchaHowToLogin");
+print '</div>';
+
+if (getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') && $action != 'edit') {
+	print '<br>';
 	print '<form id="checkconfig" name="checkconfig" method="POST" action="' . $_SERVER["PHP_SELF"] . '">';
-	print '<input type="hidden" name="token" value="' . $_SESSION['newtoken'] . '">';
+	print '<input type="hidden" name="token" value="' . newToken() . '">';
 	print '<input type="hidden" name="action" value="checkconfig">';
 	print '<input type="submit" class="button" value="' . $langs->trans("CheckConfig") . '">';
+	print googlerecaptchaGetFormJs('checkconfig');
 	print '</form>';
-
-	print '<script src="https://www.google.com/recaptcha/api.js?render=' . $conf->global->GOOGLERECAPTCHA_SITE_KEY . '"></script>';
-	print "<script>\n";
-	print "$('#checkconfig').submit(function() {\n";
-	print "    // we stoped it\n";
-	print "    event.preventDefault();\n";
-	print "    console.log('check config...');\n";
-	print "    grecaptcha.ready(function() {\n";
-	print "        grecaptcha.execute('" . $conf->global->GOOGLERECAPTCHA_SITE_KEY . "', {action: 'chekconfig'}).then(function(token) {\n";
-	print "            // add token to form\n";
-	print "            $('#checkconfig').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
-	print "            $('#checkconfig').submit();\n";
-	print "        });\n";
-	print "    });\n";
-	print "});\n";
-	print "</script>\n";
 }
 
 // Page end
