@@ -63,46 +63,30 @@ class ActionsGoogleRecaptcha
 	}
 
 	/**
-	 * Edits the login form to allow entering GoogleRecaptcha Login
+	 * Add the reCAPTCHA v3 token to the login form, for the login method "googlerecaptcha"
+	 * ($dolibarr_main_authentication = 'googlerecaptcha' in conf.php, all Dolibarr versions).
+	 * Not done when the captcha handler of the module is already used on the login page (Dolibarr 21+), it adds the token.
+	 *
 	 * @return int
 	 */
 	public function getLoginPageOptions()
 	{
-		global $conf;
+		global $dolibarr_main_authentication;
 
-		$tpl = '<script src="https://www.google.com/recaptcha/api.js?render=' . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . '"></script>';
-		$tpl .= "<script>\n";
-		$tpl .= "$('#login').submit(function() {\n";
-		$tpl .= "    // we stoped it\n";
-		$tpl .= "    event.preventDefault();\n";
-		$tpl .= "    console.log('try login...');\n";
-		$tpl .= "    grecaptcha.ready(function() {\n";
-		$tpl .= "        grecaptcha.execute('" . getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY') . "', {action: 'login'}).then(function(token) {\n";
-		$tpl .= "            // add token to form\n";
-		$tpl .= "            $('#login').prepend('<input type=\"hidden\" name=\"g-recaptcha-response\" value=\"' + token + '\">');\n";
-		$tpl .= "            $('#login').unbind('submit').submit();\n";
-		$tpl .= "        });\n";
-		$tpl .= "    });\n";
-		$tpl .= "});\n";
-		$tpl .= "</script>\n";
-		if (getDolGlobalString('GOOGLERECAPTCHA_SITE_KEY')) {
-			$this->resprints = $tpl;
+		$authmodes = explode(',', (string) $dolibarr_main_authentication);
+		if (!in_array('googlerecaptcha', array_map('trim', $authmodes))) {
+			return 0;
+		}
+		if (
+			getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA') && getDolGlobalString('MAIN_SECURITY_ENABLECAPTCHA_HANDLER') == 'googlerecaptcha'
+			&& file_exists(DOL_DOCUMENT_ROOT . '/core/modules/security/captcha/modules_captcha.php')
+		) {
+			return 0;
 		}
 
+		dol_include_once('/googlerecaptcha/lib/googlerecaptcha.lib.php');
+		$this->resprints = googlerecaptchaGetFormJs('login', '#login');
+
 		return 0;
-	}
-
-	/**
-	 * Return password field for new user create
-	 * @return int
-	 */
-	public function printUserPasswordField($parameters)
-	{
-		global $conf;
-
-		$tpl = ($parameters['valuetoshow'] ? ', ' : '') . '<input size="30" maxsize="32" type="text" name="password" value="' . $parameters['password'] . '" autocomplete="new-password">';
-
-		$this->resprints = $tpl;
-		return 1;
 	}
 }

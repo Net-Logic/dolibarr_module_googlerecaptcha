@@ -102,9 +102,8 @@ class modGoogleRecaptcha extends DolibarrModules
 			// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context to 'all'
 			'hooks' => [
 				'data' => [
+					// Login page: token for the login method "googlerecaptcha" (all Dolibarr versions)
 					'mainloginpage',
-					// usercard pour le password
-					'usercard',
 				],
 				'entity' => $conf->entity,
 			],
@@ -128,7 +127,7 @@ class modGoogleRecaptcha extends DolibarrModules
 		$this->langfiles = ["googlerecaptcha@googlerecaptcha"];
 		// Minimum version of PHP required by module
 		$this->phpmin = [7, 1];
-		$this->need_dolibarr_version = [19, -3]; // Minimum version of Dolibarr required by module
+		$this->need_dolibarr_version = [20, 0]; // Minimum version of Dolibarr required by module
 		// Warning to show when we activate module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
 		$this->warnings_activation = [];
 		// Warning to show when we activate an external module. array('always'='text') or array('FR'='textfr','ES'='textes'...)
@@ -170,7 +169,6 @@ class modGoogleRecaptcha extends DolibarrModules
 
 		// Main menu entries to add
 		$this->menu = [];
-		$r = 0;
 	}
 
 	/**
