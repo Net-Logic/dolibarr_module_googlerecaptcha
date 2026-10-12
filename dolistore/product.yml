@@ -7,3 +7,5 @@ categories: [ "Modules/Plugins", "Outils systèmes", "Interfaçage externes" ]
 keywords: [ recaptcha, google recaptcha, recaptcha v3, captcha, security, login, spam, bot, v20, v21, v22, v23, v24 ]
 # Images already on the product are kept: only an empty product receives dolistore/screenshots
 screenshots: if-empty
+# The cover on DoliStore follows dolistore/cover.png (uploaded only when the bytes differ)
+cover: sync
