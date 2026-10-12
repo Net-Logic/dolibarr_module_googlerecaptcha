@@ -1,3 +1,7 @@
+## 2.1.1
+
+* DoliStore: new cover image and automatic update of the product page (texts, cover) on each release.
+
 ## 2.1.0
 
 #### Compatibility with Dolibarr 20 to 25
