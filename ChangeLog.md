@@ -1,4 +1,4 @@
-## Unreleased
+## 2.1.0
 
 #### Compatibility with Dolibarr 20 to 25
 * Captcha handler (Dolibarr 21+): the token is added to every form that shows the captcha (login, password forgotten, public ticket, member, donation and recruitment forms of Dolibarr 23+), not only to the login form, also when the form is submitted by `form.submit()` (buttons of Dolibarr), keeping the clicked button.
