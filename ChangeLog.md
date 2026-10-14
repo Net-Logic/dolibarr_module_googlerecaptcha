@@ -1,3 +1,7 @@
+## 2.1.2
+
+* DoliStore: page in the shared Net-Logic layout (dolistore-sync v0.4.4), product name "Google reCAPTCHA v3 - invisible captcha for Dolibarr". No code change.
+
 ## 2.1.1
 
 * DoliStore: new cover image and automatic update of the product page (texts, cover) on each release.

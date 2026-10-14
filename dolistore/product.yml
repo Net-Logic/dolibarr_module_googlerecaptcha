@@ -9,3 +9,5 @@ keywords: [ recaptcha, google recaptcha, recaptcha v3, captcha, security, login,
 screenshots: if-empty
 # The cover on DoliStore follows dolistore/cover.png (uploaded only when the bytes differ)
 cover: sync
+# Shared Net-Logic description layout of dolistore-sync (generated requirements, installation, support and related modules)
+layout: netlogic
