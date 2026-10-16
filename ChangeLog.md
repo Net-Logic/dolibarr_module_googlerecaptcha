@@ -1,3 +1,7 @@
+## 2.1.3
+
+* DoliStore page: Net Logic banner at the top of the description (dolistore-sync v0.5.0). No code change.
+
 ## 2.1.2
 
 * DoliStore: page in the shared Net-Logic layout (dolistore-sync v0.4.4), product name "Google reCAPTCHA v3 - invisible captcha for Dolibarr". No code change.
