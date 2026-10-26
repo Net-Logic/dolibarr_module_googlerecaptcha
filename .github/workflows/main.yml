@@ -77,7 +77,7 @@ jobs:
       - name: Find the package
         run: echo "ZIP=$(ls dist/module_googlerecaptcha-*.zip)" >> "$GITHUB_ENV"
       # Pinned to a tag: the action receives the DoliStore secrets, a moving ref (@main) would let any push to its main read them
-      - uses: Net-Logic/dolistore-sync@v0.5.0
+      - uses: Net-Logic/dolistore-sync@v0.5.1
         with:
           descriptor: core/modules/modGoogleRecaptcha.class.php
           zip: ${{ env.ZIP }}
